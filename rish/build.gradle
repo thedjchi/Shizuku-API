@@ -4,11 +4,7 @@ plugins {
 
 android {
     namespace 'rikka.rish'
-    compileSdk api_target_sdk
     defaultConfig {
-        minSdkVersion api_min_sdk
-        targetSdkVersion api_target_sdk
-        consumerProguardFiles "consumer-rules.pro"
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=none'
@@ -21,12 +17,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
     externalNativeBuild {
         cmake {
@@ -39,7 +34,7 @@ dependencies {
     implementation project(':api')
 
     implementation 'androidx.annotation:annotation:1.3.0'
-    implementation 'dev.rikka.ndk.thirdparty:cxx:1.2.0'
+    implementation 'org.lsposed.libcxx:libcxx:27.0.12077973'
 }
 
 ext {

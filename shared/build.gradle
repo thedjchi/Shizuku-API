@@ -4,21 +4,14 @@ plugins {
 
 android {
     namespace 'rikka.shizuku.shared'
-    compileSdk api_target_sdk
-    defaultConfig {
-        minSdkVersion api_min_sdk
-        targetSdkVersion api_target_sdk
-        consumerProguardFiles "consumer-rules.pro"
-    }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 

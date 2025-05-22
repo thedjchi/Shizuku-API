@@ -5,7 +5,6 @@
     <application
         android:name=".DemoApplication"
         android:allowBackup="false"
-        android:extractNativeLibs="true"
         android:label="Demo for Shizuku &amp; Sui"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault"

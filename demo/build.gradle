@@ -5,14 +5,10 @@ plugins {
 
 android {
     namespace 'rikka.shizuku.demo'
-    compileSdk api_target_sdk
     defaultConfig {
         applicationId "rikka.shizuku.demo"
-        minSdkVersion api_min_sdk
-        targetSdkVersion api_target_sdk
-        versionCode api_version_code
+        versionCode 1
         versionName api_version_name
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
                 abiFilters "armeabi-v7a", 'arm64-v8a', 'x86', 'x86_64'
@@ -27,6 +23,7 @@ android {
         }
     }
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         aidl true
     }
@@ -41,8 +38,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+    packaging {
+        jniLibs {
+            useLegacyPackaging true
+        }
     }
 }
 
@@ -53,5 +55,5 @@ dependencies {
     implementation project(':provider') // required by Shizuku only
 
     compileOnly project(':demo-hidden-api-stub')
-    implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:4.3' // bypass hidden api restriction, https://github.com/LSPosed/AndroidHiddenApiBypass
+    implementation 'org.lsposed.hiddenapibypass:hiddenapibypass:6.1' // bypass hidden api restriction, https://github.com/LSPosed/AndroidHiddenApiBypass
 }
