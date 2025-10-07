@@ -1,4 +1,10 @@
-apply plugin: 'java-library'
+plugins {
+    id("com.android.library")
+}
 
-sourceCompatibility = "11"
-targetCompatibility = "11"
+android {
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+}
