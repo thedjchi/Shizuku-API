@@ -12,6 +12,8 @@ import static rikka.shizuku.ShizukuApiConstants.BIND_APPLICATION_SHOULD_SHOW_REQ
 import static rikka.shizuku.ShizukuApiConstants.REQUEST_PERMISSION_REPLY_ALLOWED;
 
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -46,6 +48,7 @@ public class Shizuku {
     private static boolean shouldShowRequestPermissionRationale = false;
     private static boolean preV11 = false;
     private static boolean binderReady = false;
+    private static volatile Context sAppContext;
 
     private static final IShizukuApplication SHIZUKU_APPLICATION = new IShizukuApplication.Stub() {
 
@@ -73,9 +76,32 @@ public class Shizuku {
         }
     };
 
+    public static void init(Context context) {
+        if (context == null) return;
+        Context appContext = context.getApplicationContext();
+        if (sAppContext == null) sAppContext = appContext;
+    }
+
     private static final IBinder.DeathRecipient DEATH_RECIPIENT = () -> {
         binderReady = false;
         onBinderReceived(null, null);
+
+        if (sAppContext == null) {
+            Log.w("ShizukuApplication", "Binder died: app context not initialized, cannot notify manager");
+            return;
+        }
+
+        try {
+            Intent intent = new Intent("rikka.shizuku.BINDER_DIED");
+            ComponentName comp = new ComponentName("moe.shizuku.privileged.api",
+                "moe.shizuku.manager.receiver.ShizukuDeathReceiver");
+            intent.setComponent(comp);
+            sAppContext.sendBroadcast(intent);
+
+            Log.i("ShizukuApplication", "Binder died: broadcast sent to manager");
+        } catch (Exception e) {
+            Log.w("ShizukuApplication", "Binder died: failed to notify manager", e);
+        }
     };
 
     private static boolean attachApplicationV13(IBinder binder, String packageName) throws RemoteException {
