@@ -92,9 +92,9 @@ public class Shizuku {
         }
 
         try {
-            Intent intent = new Intent("rikka.shizuku.BINDER_DIED");
+            Intent intent = new Intent("rikka.shizuku.BINDER_DEAD");
             ComponentName comp = new ComponentName("moe.shizuku.privileged.api",
-                "moe.shizuku.manager.receiver.ShizukuDeathReceiver");
+                "moe.shizuku.manager.receiver.BinderDeadReceiver");
             intent.setComponent(comp);
             sAppContext.sendBroadcast(intent);
 
