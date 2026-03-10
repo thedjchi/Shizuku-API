@@ -1,0 +1,14 @@
+[versions]
+agp = "8.10.0"
+hidden-api = "4.3.3"
+refine = "4.4.0"
+
+[libraries]
+hidden-compat = { group = "dev.rikka.hidden", name = "compat", version.ref = "hidden-api" }
+hidden-stub = { group = "dev.rikka.hidden", name = "stub", version.ref = "hidden-api" }
+refine-runtime = { group = "dev.rikka.tools.refine", name = "runtime", version.ref = "refine" }
+refine-annotation = { group = "dev.rikka.tools.refine", name = "annotation", version.ref = "refine" }
+refine-annotation-processor = { group = "dev.rikka.tools.refine", name = "annotation-processor", version.ref = "refine" }
+
+[plugins]
+android-settings = { id = "com.android.settings", version.ref = "agp" }
