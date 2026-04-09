@@ -1,8 +1,9 @@
 [versions]
 agp = "9.1.0"
-androidx-annotation = "1.9.1"
+androidx-annotation = "1.10.0"
 androidx-core = "1.18.0"
 hidden-api = "4.4.0"
+hiddenapibypass = "6.1"
 libcxx = "29.0.14206865"
 refine = "4.4.0"
 rikkax-parcelablelist = "2.0.1"
@@ -12,6 +13,7 @@ androidx-annotation = { group = "androidx.annotation", name = "annotation", vers
 androidx-core = { group = "androidx.core", name = "core", version.ref = "androidx-core" }
 hidden-compat = { group = "dev.rikka.hidden", name = "compat", version.ref = "hidden-api" }
 hidden-stub = { group = "dev.rikka.hidden", name = "stub", version.ref = "hidden-api" }
+hiddenapibypass = { group = "org.lsposed.hiddenapibypass", name = "hiddenapibypass", version.ref = "hiddenapibypass" }
 libcxx = { group = "org.lsposed.libcxx", name = "libcxx", version.ref = "libcxx" }
 refine-runtime = { group = "dev.rikka.tools.refine", name = "runtime", version.ref = "refine" }
 refine-annotation = { group = "dev.rikka.tools.refine", name = "annotation", version.ref = "refine" }
@@ -21,5 +23,4 @@ rikkax-parcelablelist = { group = "dev.rikka.rikkax.parcelablelist", name = "par
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-android-settings = { id = "com.android.settings", version.ref = "agp" }
 rikka-refine = { id = "dev.rikka.tools.refine", version.ref = "refine" }

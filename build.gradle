@@ -1,3 +1,8 @@
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+}
+
 apply from: "manifest.gradle"
 
 allprojects {
@@ -7,6 +12,7 @@ allprojects {
 }
 
 subprojects {
+    group = "dev.rikka.shizuku"
     afterEvaluate { project ->
         if (!(it.findProperty("publishLibrary") ?: false)) {
             return

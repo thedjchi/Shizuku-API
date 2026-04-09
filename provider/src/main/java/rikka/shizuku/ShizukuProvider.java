@@ -16,6 +16,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import moe.shizuku.api.BinderContainer;
 import rikka.sui.Sui;
@@ -130,11 +131,12 @@ public class ShizukuProvider extends ContentProvider {
             }
         };
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            context.registerReceiver(receiver, new IntentFilter(ACTION_BINDER_RECEIVED), Context.RECEIVER_NOT_EXPORTED);
-        } else {
-            context.registerReceiver(receiver, new IntentFilter(ACTION_BINDER_RECEIVED));
-        }
+        ContextCompat.registerReceiver(
+                context,
+                receiver,
+                new IntentFilter(ACTION_BINDER_RECEIVED),
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
 
         Bundle reply;
         try {

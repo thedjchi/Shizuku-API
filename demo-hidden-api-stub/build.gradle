@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace = "rikka.shizuku.demo.stub"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
