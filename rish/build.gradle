@@ -7,12 +7,9 @@ android {
     defaultConfig {
         externalNativeBuild {
             cmake {
-                arguments = ["-DANDROID_STL=none"]
+                arguments = ["-DANDROID_STL=c++_static"]
             }
         }
-    }
-    buildFeatures {
-        prefab = true
     }
     buildTypes {
         release {
@@ -35,7 +32,6 @@ dependencies {
     implementation project(":api")
 
     implementation libs.androidx.annotation
-    implementation libs.libcxx
 }
 
 ext {

@@ -17,7 +17,6 @@ else ()
     add_definitions(-DDEBUG)
 endif ()
 
-find_package(cxx REQUIRED CONFIG)
 
 add_library(rish SHARED
         main.cpp
@@ -25,7 +24,7 @@ add_library(rish SHARED
         rikka_rish_RishTerminal.cpp
         rikka_rish_RishHost.cpp)
 
-target_link_libraries(rish log cxx::cxx)
+target_link_libraries(rish log)
 
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_custom_command(TARGET rish POST_BUILD
