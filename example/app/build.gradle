@@ -1,0 +1,45 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace = "com.thedjchi.shizukux.exampleapp"
+    defaultConfig {
+        applicationId = "com.thedjchi.shizukux.exampleapp"
+        versionCode = 1
+        versionName = "v1.0.0"
+    }
+    buildFeatures {
+        aidl = true
+        buildConfig = true
+        viewBinding = true
+    }
+    signingConfigs {
+        sign
+    }
+    buildTypes {
+        release {
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+}
+
+dependencies {
+    implementation libs.shizuku.api
+    implementation libs.shizuku.provider
+    compileOnly project(":hidden-api")
+
+    implementation libs.androidx.annotation
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.10.0"
+    implementation "androidx.activity:activity-ktx:1.13.0"
+    implementation libs.hiddenapibypass
+}

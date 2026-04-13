@@ -1,0 +1,18 @@
+[versions]
+agp = "9.1.0"
+androidx-annotation = "1.10.0"
+androidx-appcompat = "1.7.1"
+androidx-core = "1.18.0"
+hiddenapibypass = "6.1"
+
+[libraries]
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidx-annotation" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+hiddenapibypass = { group = "org.lsposed.hiddenapibypass", name = "hiddenapibypass", version.ref = "hiddenapibypass" }
+shizuku-api = { group = "dev.rikka.shizuku", name = "api" }
+shizuku-provider = { group = "dev.rikka.shizuku", name = "provider" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }

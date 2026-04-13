@@ -13,7 +13,6 @@ android {
     compileSdk = 36
     minSdk = 24
     targetSdk = 36
-    ndkVersion = "29.0.14206865"
 }
 
 dependencyResolutionManagement {
@@ -24,5 +23,5 @@ dependencyResolutionManagement {
     }
 }
 
-include ":aidl", ":api", ":provider", ":rish", ":server-shared", ":shared"
-includeBuild "example"
+include ":app", ":hidden-api"
+includeBuild ".."
