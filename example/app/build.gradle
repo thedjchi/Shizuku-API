@@ -31,15 +31,11 @@ android {
 }
 
 dependencies {
-    implementation libs.shizuku.api
-    implementation libs.shizuku.provider
+    implementation libs.api
+    implementation libs.api.provider
     compileOnly project(":hidden-api")
 
-    implementation libs.androidx.annotation
-    implementation libs.androidx.appcompat
-    implementation libs.androidx.core.ktx
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.10.0"
-    implementation "androidx.activity:activity-ktx:1.13.0"
+    implementation libs.bundles.androidx
     implementation libs.hiddenapibypass
+    implementation libs.kotlinx.coroutines
 }

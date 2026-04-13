@@ -1,13 +1,14 @@
 plugins {
-    alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
 }
 
 apply from: "manifest.gradle"
 
 allprojects {
-    tasks.withType(Javadoc) {
-        options.addStringOption("Xdoclint:none", "-quiet")
+    tasks.withType(Javadoc).tap {
+        configureEach {
+            options.addStringOption("Xdoclint:none", "-quiet")
+        }
     }
 }
 
@@ -92,10 +93,6 @@ subprojects {
             }
         }
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
 
 ext {

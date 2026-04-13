@@ -19,7 +19,6 @@ android {
 dependencies {
     implementation libs.androidx.annotation
     implementation libs.androidx.core
-    implementation libs.rikkax.parcelablelist
 
     api project(":aidl")
     api project(":shared")

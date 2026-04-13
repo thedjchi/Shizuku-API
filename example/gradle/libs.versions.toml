@@ -1,17 +1,24 @@
 [versions]
-agp = "9.1.0"
-androidx-annotation = "1.10.0"
+agp = "9.1.1"
+androidx-activity = "1.13.0"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.18.0"
+androidx-lifecycle = "2.10.0"
 hiddenapibypass = "6.1"
+kotlinx-coroutines = "1.10.2"
 
 [libraries]
-androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidx-annotation" }
+androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidx-activity" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
+androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 hiddenapibypass = { group = "org.lsposed.hiddenapibypass", name = "hiddenapibypass", version.ref = "hiddenapibypass" }
-shizuku-api = { group = "dev.rikka.shizuku", name = "api" }
-shizuku-provider = { group = "dev.rikka.shizuku", name = "provider" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+api = { group = "dev.rikka.shizuku", name = "api" }
+api-provider = { group = "dev.rikka.shizuku", name = "provider" }
+
+[bundles]
+androidx = ["androidx-activity", "androidx-appcompat", "androidx-core", "androidx-lifecycle"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
