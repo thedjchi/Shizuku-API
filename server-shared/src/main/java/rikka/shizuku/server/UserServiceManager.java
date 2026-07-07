@@ -16,6 +16,7 @@ import android.content.pm.PackageInfo;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.text.format.DateUtils;
 import android.util.ArrayMap;
 
@@ -249,13 +250,39 @@ public abstract class UserServiceManager {
         }
 
         if (entry == null) {
-            throw new IllegalArgumentException("unable to find token " + token);
+            // The record for this token is gone - most commonly because a
+            // concurrent unbind/rebind, or the record's own start timeout,
+            // evicted it while this attach was still in flight (see #201).
+            // Nobody wants this binder anymore; tell it to clean itself up
+            // instead of leaving it to linger, and let the caller's attach
+            // complete normally instead of throwing and leaving the caller
+            // (a spawned process, or an in-process reconnect) stuck.
+            LOGGER.w("Attach for unknown/expired token %s: no matching record, destroying the attaching binder instead", token);
+            destroyUnknownBinder(binder);
+            return;
         }
 
         LOGGER.v("Received binder for service record %s", token);
 
         UserServiceRecord record = entry.getValue();
         record.setBinder(binder);
+    }
+
+    private void destroyUnknownBinder(IBinder binder) {
+        if (binder == null || !binder.pingBinder()) {
+            return;
+        }
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        try {
+            data.writeInterfaceToken(binder.getInterfaceDescriptor());
+            binder.transact(ShizukuApiConstants.USER_SERVICE_TRANSACTION_destroy, data, reply, Binder.FLAG_ONEWAY);
+        } catch (Throwable e) {
+            LOGGER.w("Failed to destroy unknown/orphaned user service binder", e);
+        } finally {
+            data.recycle();
+            reply.recycle();
+        }
     }
 
     public void attachUserService(IBinder binder, Bundle options) {
