@@ -84,7 +84,18 @@ public abstract class UserServiceManager {
             UserServiceRecord record = getUserServiceRecordLocked(key);
             if (record == null) return 1;
             if (remove) {
-                removeUserServiceLocked(record);
+                if (record.service == null) {
+                    // The process for this record hasn't attached yet, and there's
+                    // no way to kill an in-flight spawn - evicting the record here
+                    // would only orphan its eventual attach (see #201). Just detach
+                    // this connection instead: a rebind of the same key before it
+                    // attaches will pick this same record/token back up rather than
+                    // racing a second spawn, and UserServiceRecord#setBinder cleans
+                    // it up on arrival if nobody ends up still waiting on it.
+                    record.callbacks.unregister(conn);
+                } else {
+                    removeUserServiceLocked(record);
+                }
             } else {
                 record.callbacks.unregister(conn);
             }

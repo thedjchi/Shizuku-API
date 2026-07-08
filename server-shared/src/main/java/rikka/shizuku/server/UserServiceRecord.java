@@ -85,6 +85,15 @@ public abstract class UserServiceRecord {
             LOGGER.w("linkToDeath %s", token);
         }
 
+        if (!daemon && callbacks.getRegisteredCallbackCount() == 0) {
+            // Nobody was still waiting on this by the time it finally attached
+            // (unbound while starting, and never rebound) - clean it up now,
+            // same as if it had died with no connections left.
+            LOGGER.v("Service record %s attached with no connections left - removing", token);
+            removeSelf();
+            return;
+        }
+
         broadcastBinderReceived();
     }
 
