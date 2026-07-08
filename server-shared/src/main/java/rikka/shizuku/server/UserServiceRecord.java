@@ -39,6 +39,7 @@ public abstract class UserServiceRecord {
     public final RemoteCallbackList<IShizukuServiceConnection> callbacks = new ConnectionList();
     public boolean daemon;
     public boolean starting;
+    public boolean pendingDestroy;
 
     public UserServiceRecord(int versionCode, boolean daemon) {
         this.versionCode = versionCode;
@@ -83,6 +84,15 @@ public abstract class UserServiceRecord {
             binder.linkToDeath(deathRecipient, 0);
         } catch (Throwable tr) {
             LOGGER.w("linkToDeath %s", token);
+        }
+
+        if (pendingDestroy) {
+            // An explicit unbind(remove=true) came in before this attach arrived,
+            // and no rebind of the same key rescinded it in the meantime - honor
+            // it now, the same as if it had been removed outright.
+            LOGGER.v("Service record %s attached after an unbind requested its removal - removing", token);
+            removeSelf();
+            return;
         }
 
         if (!daemon && callbacks.getRegisteredCallbackCount() == 0) {

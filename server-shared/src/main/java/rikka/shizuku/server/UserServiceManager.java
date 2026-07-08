@@ -87,12 +87,14 @@ public abstract class UserServiceManager {
                 if (record.service == null) {
                     // The process for this record hasn't attached yet, and there's
                     // no way to kill an in-flight spawn - evicting the record here
-                    // would only orphan its eventual attach (see #201). Just detach
-                    // this connection instead: a rebind of the same key before it
-                    // attaches will pick this same record/token back up rather than
-                    // racing a second spawn, and UserServiceRecord#setBinder cleans
-                    // it up on arrival if nobody ends up still waiting on it.
-                    record.callbacks.unregister(conn);
+                    // would only orphan its eventual attach (see #201). The client
+                    // doesn't give us a specific connection to detach here (conn is
+                    // always null for a remove=true unbind - see Shizuku#unbindUserService),
+                    // so just remember that removal was requested instead of touching
+                    // the callback list. UserServiceRecord#setBinder honors it once the
+                    // binder actually arrives, unless a rebind of the same key reuses
+                    // this record first and rescinds it.
+                    record.pendingDestroy = true;
                 } else {
                     removeUserServiceLocked(record);
                 }
@@ -192,6 +194,10 @@ public abstract class UserServiceManager {
                 if (record.daemon != daemon) {
                     record.setDaemon(daemon);
                 }
+                // A previous unbind(remove=true) marked this pending destruction
+                // while its spawn was still in flight; this rebind wants it again,
+                // so rescind that.
+                record.pendingDestroy = false;
                 return record;
             }
 
