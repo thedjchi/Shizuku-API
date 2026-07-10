@@ -246,10 +246,31 @@ public abstract class UserServiceManager {
 
             exitCode = process.waitFor();
         } catch (Throwable e) {
-            throw new IllegalStateException(e.getMessage());
+            LOGGER.w("Failed to start process for service record %s (%s): %s", key, token, e.getMessage());
+            dropRecordIfNotAttachedLocked(record);
+            return;
         }
         if (exitCode != 0) {
-            throw new IllegalStateException("sh exited with " + exitCode);
+            LOGGER.w("Process for service record %s (%s) exited with %d before attaching", key, token, exitCode);
+            dropRecordIfNotAttachedLocked(record);
+            return;
+        }
+    }
+
+    private void dropRecordIfNotAttachedLocked(UserServiceRecord record) {
+        // The spawn failed before the process attached its binder. Leaving the
+        // record in the "starting" state would trap a later rebind: a rebind of
+        // the same key reuses this record (starting stays true and is never
+        // reset), which neither re-spawns nor sets a new timeout, so the client
+        // would hang until the 30s start timeout finally evicts it. Drop it now
+        // so a rebind creates a fresh record and spawns again, and so any client
+        // already waiting on it is released immediately (see #201 follow-up).
+        // Guard on service == null under the lock so we never tear down a process
+        // that managed to attach in the meantime.
+        synchronized (this) {
+            if (record.service == null) {
+                removeUserServiceLocked(record);
+            }
         }
     }
 
