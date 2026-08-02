@@ -34,7 +34,8 @@ android {
         release {
             minifyEnabled = true
             shrinkResources = true
-            proguardFiles [getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"]
+            // Groovy: proguardFiles takes varargs, not a single List (AGP 8+ cast error).
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
     compileOptions {
